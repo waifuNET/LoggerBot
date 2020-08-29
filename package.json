@@ -13,5 +13,5 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "EngiNL && BUS410",
-  "license": "ISC"
+  "license": "MIT"
 }
