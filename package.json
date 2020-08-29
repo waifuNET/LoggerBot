@@ -6,7 +6,7 @@
   "dependencies": {
     "discord.js": "^12.3.1",
     "mkdirp": "^1.0.4",
-    "sqlite3": "^5.0.0"
+    "sqlite-sync": "^0.3.9"
   },
   "devDependencies": {},
   "scripts": {
