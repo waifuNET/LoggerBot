@@ -8,6 +8,11 @@ var database = require("./myModules/database.js");
 const fs = require('fs');
 let cfg = require('./cfg.json');
 
+/**
+ * Timer for date refresh.
+ */
+setInterval(time.time_update, 1000);
+
 let commands = [];
 
 console.log(time.getHumanDateFormat(time.utc));
@@ -61,7 +66,7 @@ logger.on('ready', () => {
  */
 logger.on('message', async msg => {
   if(msg.author.bot) return;
-  log.addLog(logger, msg, time);
+  //log.addLog(logger, msg, time); save in json
   if(msg.channel.type == "dm") return;
   if(!msg.content.startsWith(cfg.prefix)) return;
 

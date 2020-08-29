@@ -68,13 +68,9 @@ function time_update(){
 exports.getHumanDateFormat = getHumanDateFormat;
 exports.getHumanOnlyDateFormat = getHumanOnlyDateFormat;
 exports.getHumanDateFormatWithOffset = getHumanDateFormatWithOffset;
+exports.time_update = time_update;
 
 exports.myOffset = myOffset;
 exports.unixTimestamp = unixTimestamp;
 exports.myTime = myTime;
 exports.utc = utc;
-
-/**
- * Timer for data refresh.
- */
-setInterval(time_update, 1000);

@@ -40,6 +40,8 @@ function save_message(channel_name, server_name, content, human_time, utc, utc_o
 function close() { db.close(); }
 
 exports.create_tables = create_tables;
+exports.get_messages_by = get_messages_by;
+exports.save_message = save_message;
 
 // Чтение
 // get_messages_by('id').forEach(msg => {
