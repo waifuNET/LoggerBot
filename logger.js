@@ -56,4 +56,9 @@ logger.on('message', async msg => {
   }
 });
 
+logger.on("channelCreate", async channel => {
+  if (!channel.guild) return false;
+  console.log("created new channel. id: " + channel.id);
+});
+
 logger.login(cfg.token);

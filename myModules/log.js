@@ -4,18 +4,6 @@ let cfg = require('../cfg.json');
 var list = [];
 exports.log_list = list;
 
-var st_log = {
-    channel_name: "",
-    server_name: "",
-    content: "",
-    human_time: "",
-    utc: "",
-    utc_offset: "",
-    author_id: "",
-    author_username: "",
-    discriminator: "",
-}
-
 function loadNowDateJson(time){
     let dir = "./logs/";
     let file = dir + time.getHumanOnlyDateFormat(time.utc) + ".json";
@@ -42,6 +30,7 @@ function addLog(logger, msg, time){
     }
 
     list.push({ 
+        type: msg.channel.type,
         channel_name: msg.channel.name,
         server_name: msg.channel.guild.name,
         content: msg.content,
