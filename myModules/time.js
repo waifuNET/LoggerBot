@@ -9,6 +9,9 @@ var unixTimestamp = Date.now();
 var utc = unixTimestamp + (currentTimeZoneOffsetInHours * 60 * 60) * 1000;
 var myTime = utc + (myOffset * 60 * 60) * 1000;
 
+/**
+ * Converts unix time to human-readable time.
+ */
 function getHumanDateFormat(unix) {
 	var dateObject = new Date(unix);
 	var utchumanDateFormat = dateObject.toLocaleString();
@@ -16,6 +19,11 @@ function getHumanDateFormat(unix) {
 	return utchumanDateFormat.replace(',', "");
 }
 
+/**
+ * Converts unix time to human-readable time (date only).
+ * Offset is an integer. Adjusts the time from unix to your time.
+ * See (https://en.wikipedia.org/wiki/List_of_UTC_time_offsets).
+ */
 function getHumanOnlyDateFormat(unix, _offset = "0"){
 	var offset = parseInt(_offset, 10);
 	var myOffset = offset * -1;
@@ -29,6 +37,11 @@ function getHumanOnlyDateFormat(unix, _offset = "0"){
 	return date;
 }
 
+/**
+ * Convert unix time to human readable time with offset.
+ * Offset is an integer. Adjusts the time from unix to your time.
+ * See (https://en.wikipedia.org/wiki/List_of_UTC_time_offsets).
+ */
 function getHumanDateFormatWithOffset(unix, offset){
 	var myOffset = offset * -1;
 	var dateObject = new Date(unix + (myOffset * 60 * 60) * 1000);
@@ -37,6 +50,9 @@ function getHumanDateFormatWithOffset(unix, offset){
 	return utchumanDateFormat.replace(',', "");
 }
 
+/**
+ * Refreshes data.
+ */
 function time_update(){
 	myOffset = currentTimeZoneOffsetInHours * -1;
 	unixTimestamp = Date.now();
@@ -58,4 +74,7 @@ exports.unixTimestamp = unixTimestamp;
 exports.myTime = myTime;
 exports.utc = utc;
 
+/**
+ * Timer for data refresh.
+ */
 setInterval(time_update, 1000);
