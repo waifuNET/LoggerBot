@@ -1,21 +1,20 @@
 const fs = require('fs');
 const db = require('sqlite-sync');
 
-
 db.connect('logs/database.sqlite3.db');
 
-
+/**
+ * Creates tables necessary for work.
+ */
 function create_tables(){
     let command = fs.readFileSync('myModules/create_tables.sql', 'utf8');
     db.run(command);
 }
 
-
 function get_messages_by(field){
     let res = db.run("SELECT * FROM messages");
     return res;
 }
-
 
 function save_message(channel_name, server_name, content, human_time, utc, utc_offset,
                       author_id, author_username, discriminator, message_type){
@@ -36,7 +35,6 @@ function save_message(channel_name, server_name, content, human_time, utc, utc_o
             ])
 }
 
-
 function close() { db.close(); }
 
 exports.create_tables = create_tables;
@@ -51,5 +49,3 @@ exports.save_message = save_message;
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type')
-
-create_tables();

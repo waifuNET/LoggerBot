@@ -66,7 +66,8 @@ logger.on('ready', () => {
  */
 logger.on('message', async msg => {
   if(msg.author.bot) return;
-  //log.addLog(logger, msg, time); save in json
+  log.addLog(logger, msg, time); //save in json
+  database.save_message(msg.channel.name, msg.channel.guild.name, msg.content, time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset), time.utc, cfg.utc_offset, msg.author.id, msg.author.username, msg.author.discriminator, msg.channel.type);
   if(msg.channel.type == "dm") return;
   if(!msg.content.startsWith(cfg.prefix)) return;
 
@@ -85,6 +86,7 @@ logger.on('message', async msg => {
 logger.on("channelCreate", async channel => {
   if (!channel.guild) return false;
   console.log("created new channel. id: " + channel.id);
+  console.log(channel);
 });
 
 /**
