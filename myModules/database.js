@@ -2,11 +2,11 @@ const fs = require('fs');
 const db = require('sqlite-sync');
 
 
-db.connect('../logs/database.sqlite3.db');
+db.connect('logs/database.sqlite3.db');
 
 
 function create_tables(){
-    let command = fs.readFileSync('create_tables.sql', 'utf8');
+    let command = fs.readFileSync('myModules/create_tables.sql', 'utf8');
     db.run(command);
 }
 
@@ -39,6 +39,8 @@ function save_message(channel_name, server_name, content, human_time, utc, utc_o
 
 function close() { db.close(); }
 
+exports.create_tables = create_tables;
+
 // Чтение
 // get_messages_by('id').forEach(msg => {
 //     console.log(msg.id);
@@ -47,3 +49,5 @@ function close() { db.close(); }
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type')
+
+create_tables();

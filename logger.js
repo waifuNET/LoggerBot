@@ -3,6 +3,7 @@ const logger = new Discord.Client();
 
 var time = require("./myModules/time.js");
 var log = require("./myModules/log.js");
+var database = require("./myModules/database.js");
 
 const fs = require('fs');
 let cfg = require('./cfg.json');
@@ -10,6 +11,8 @@ let cfg = require('./cfg.json');
 let commands = [];
 
 console.log(time.getHumanDateFormat(time.utc));
+
+database.create_tables();
 
 /**
  * Reads all files with the "js" extension, then reads them and adds them to commands.
