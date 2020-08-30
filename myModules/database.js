@@ -49,10 +49,10 @@ function get_channels_by(field){
 }
 
 function save_channel(channel_name, server_name, human_time, utc, utc_offset,
-    author_id, author_username, discriminator, channel_type){
+    author_id, author_username, discriminator, channel_type, channel_event){
     db.run(`INSERT INTO channels(channel_name, server_name, human_time,
-    utc, utc_offset, author_id, author_username, discriminator, channel_type)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    utc, utc_offset, author_id, author_username, discriminator, channel_type, channel_event)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
             channel_name, // string
             server_name, // string
@@ -62,7 +62,8 @@ function save_channel(channel_name, server_name, human_time, utc, utc_offset,
             author_id, // integer
             author_username, // string
             discriminator, // string
-            channel_type // string
+            channel_type, // string
+            channel_event // string
         ])
 }
 
@@ -77,10 +78,10 @@ exports.get_channels_by = get_channels_by;
 exports.close = close;
 
 // Чтение
-// console.log(get_messages_by('id'));
+console.log(get_messages_by('id'));
 // 
 // console.log(get_channels_by('id'));
 
 // Запись
-// save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type')
-// save_channel('chnnl', 'servr', 1970, 197000, 6, 1, 'usrname', 'kek', 'type')
+// save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');
+// save_channel('chnnl', 'servr', 1970, 197000, 6, 1, 'usrname', 'kek', 'type', 'event');

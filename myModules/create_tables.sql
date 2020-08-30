@@ -22,5 +22,6 @@ CREATE TABLE IF NOT EXISTS channels (
 	author_id INTEGER NOT NULL,
 	author_username TEXT NOT NULL,
 	discriminator TEXT NOT NULL,
-	channel_type TEXT NOT NULL
+	channel_type TEXT NOT NULL,
+	channel_event TEXT NOT NULL
 );
