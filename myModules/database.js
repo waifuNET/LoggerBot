@@ -11,6 +11,10 @@ function create_tables(){
     db.run(command);
 }
 
+
+
+// Messages code
+
 function get_messages_by(field){
     let res = db.run("SELECT * FROM messages");
     return res;
@@ -35,18 +39,48 @@ function save_message(channel_name, server_name, content, human_time, utc, utc_o
             ])
 }
 
+//////////////////////////////////////////////
+
+// Channels code
+
+function get_channels_by(field){
+    let res = db.run("SELECT * FROM channels");
+    return res;
+}
+
+function save_channel(channel_name, server_name, human_time, utc, utc_offset,
+    author_id, author_username, discriminator, channel_type){
+    db.run(`INSERT INTO channels(channel_name, server_name, human_time,
+    utc, utc_offset, author_id, author_username, discriminator, channel_type)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+            channel_name, // string
+            server_name, // string
+            human_time, // string
+            utc, // integer
+            utc_offset, // integer
+            author_id, // integer
+            author_username, // string
+            discriminator, // string
+            channel_type // string
+        ])
+}
+
+//////////////////////////////////////////////
 function close() { db.close(); }
 
 exports.create_tables = create_tables;
-exports.get_messages_by = get_messages_by;
 exports.save_message = save_message;
+exports.get_messages_by = get_messages_by;
+exports.save_channel = save_channel;
+exports.get_channels_by = get_channels_by;
 exports.close = close;
 
 // Чтение
-// get_messages_by('id').forEach(msg => {
-//     console.log(msg.id);
-//     console.log(msg.content);
-// });
+// console.log(get_messages_by('id'));
+// 
+// console.log(get_channels_by('id'));
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type')
+// save_channel('chnnl', 'servr', 1970, 197000, 6, 1, 'usrname', 'kek', 'type')
