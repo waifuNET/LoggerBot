@@ -1,19 +1,26 @@
 /*
 #all logs
+
+#used:
+message
 channelCreate
 channelDelete
 channelUpdate
+
+#not a used:
 emojiCreate
 emojiDelete
 emojiUpdate
+
 guildBanAdd
 guildBanRemove
 guildCreate
 guildDelete
 guildUpdate
+
 inviteCreate
 inviteDelete
-message
+
 messageDelete
 messageDeleteBulk
 messageReactionAdd
@@ -21,10 +28,13 @@ messageReactionRemove
 messageReactionRemoveAll
 messageReactionRemoveEmoji
 messageUpdate
+
 roleCreate
 roleDelete
 roleUpdate
+
 userUpdate
+
 warn
 
 #database table:

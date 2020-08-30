@@ -65,12 +65,22 @@ logger.on('ready', () => {
  * Called when the bot receives a message or when users post something in the channel.
  */
 logger.on('message', async msg => {
+  if(msg.channel.type == "dm") return;
   if(msg.author.bot) return;
   log.addLog(logger, msg, time); //save in json
-  database.save_message(msg.channel.name, msg.channel.guild.name, msg.content, time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset), time.utc, cfg.utc_offset, msg.author.id, msg.author.username, msg.author.discriminator, msg.channel.type);
-  if(msg.channel.type == "dm") return;
-  if(!msg.content.startsWith(cfg.prefix)) return;
 
+  database.save_message( //save in sqlite
+  msg.channel.name,
+  msg.channel.guild.name,
+  msg.content,
+  time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset),
+  time.utc, cfg.utc_offset,
+  msg.author.id,
+  msg.author.username,
+  msg.author.discriminator,
+  msg.channel.type);
+
+  if(!msg.content.startsWith(cfg.prefix)) return;
   let messageArray = msg.content.split(" ");
   let command = messageArray[0].toLowerCase();
   let args = messageArray.slice(1);
@@ -84,10 +94,31 @@ logger.on('message', async msg => {
  * Called when someone creates a channel.
  */
 logger.on("channelCreate", async channel => {
-  if (!channel.guild) return false;
-  console.log("created new channel. id: " + channel.id);
-  console.log(channel);
+  channel_event(channel, "create");
 });
+
+logger.on("channelDelete", async channel => {
+  channel_event(channel, "delete");
+});
+
+logger.on("channelUpdate", async channel => {
+  channel_event(channel, "update");
+});
+
+async function channel_event(channel, event){
+  if (!channel.guild) return false;
+  console.log(`channel ${event}. id: ` + channel.id);
+  //console.log(channel);
+  const AuditLogFetch = await channel.guild.fetchAuditLogs({limit: 1, type: `CHANNEL_${event.toUpperCase()}`});
+  const channelLog = AuditLogFetch.entries.first();
+  if (!channelLog) return console.log(`The channel was ${event}, but no relevant audit logs were found.`);
+  const { executor, target } = channelLog;
+  console.log(executor.username);
+  
+  //executor.id
+  //executor.username
+  //executor.discriminator
+}
 
 /**
  * Authorizes the bot through a token.

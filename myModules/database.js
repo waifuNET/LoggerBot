@@ -40,6 +40,7 @@ function close() { db.close(); }
 exports.create_tables = create_tables;
 exports.get_messages_by = get_messages_by;
 exports.save_message = save_message;
+exports.close = close;
 
 // Чтение
 // get_messages_by('id').forEach(msg => {
