@@ -26,7 +26,7 @@ async function run(logger, msg, args){
     else if(args[0] == "channel"){
         let result = "";
         let border = "=========================" + "\n";
-        database.get_channels_by('id').forEach(element => {
+        database.get_objects_by('channels', 'id').forEach(element => {
             if(count >= limit) return;
             let channel    = "channel: "    + element.channel_name    + "\n";
             let event      = "event: "      + element.channel_event   + "\n";
@@ -42,7 +42,7 @@ async function run(logger, msg, args){
     else{
         let result = "";
         let border = "=========================" + "\n";
-        database.get_messages_by('id').forEach(element => {
+        database.get_objects_by('messages', 'id').forEach(element => {
             if(count >= limit) return;
             let channel    = "channel: "    + element.channel_name    + "\n";
             let content    = "content: "    + element.content         + "\n";
