@@ -12,6 +12,12 @@ function create_tables(){
 }
 
 
+// From all
+function get_objects_by(table, field){
+    let res = db.run("SELECT * FROM " + table);
+    return res;
+}
+
 
 // Messages code
 
@@ -36,8 +42,7 @@ function save_message(channel_name, server_name, content, human_time, utc, utc_o
                 author_username, // string
                 discriminator, // string
                 message_type // string
-            ])
-}
+	    ]) }
 
 //////////////////////////////////////////////
 
@@ -78,8 +83,8 @@ exports.get_channels_by = get_channels_by;
 exports.close = close;
 
 // Чтение
-//console.log(get_messages_by('id')); 
-// console.log(get_channels_by('id'));
+// console.log(get_objects_by('messages', 'id'));
+// console.log(get_objects_by('channels', 'channel_name'));
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');
