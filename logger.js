@@ -47,7 +47,7 @@ fs.readdir('./cmds/', (error, files) =>{
   }
 });
 
-log.loadNowDateJson(time);
+//log.loadNowDateJson(time);
 
 /**
  * Event handlers.
@@ -67,18 +67,19 @@ logger.on('ready', () => {
 logger.on('message', async msg => {
   if(msg.channel.type == "dm") return;
   if(msg.author.bot) return;
-  log.addLog(logger, msg, time); //save in json
+  //log.addLog(logger, msg, time); //save in json
 
   database.save_message( //save in sqlite
-  msg.channel.name,
-  msg.channel.guild.name,
-  msg.content,
-  time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset),
-  time.utc, cfg.utc_offset,
-  msg.author.id,
-  msg.author.username,
-  msg.author.discriminator,
-  msg.channel.type);
+    msg.channel.name,
+    msg.channel.guild.name,
+    msg.content,
+    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+    time.utc, cfg.utc_offset,
+    msg.author.id,
+    msg.author.username,
+    msg.author.discriminator,
+    msg.type
+  );
 
   if(!msg.content.startsWith(cfg.prefix)) return;
   let messageArray = msg.content.split(" ");
@@ -108,16 +109,23 @@ logger.on("channelUpdate", async channel => {
 async function channel_event(channel, event){
   if (!channel.guild) return false;
   console.log(`channel ${event}. id: ` + channel.id);
-  //console.log(channel);
   const AuditLogFetch = await channel.guild.fetchAuditLogs({limit: 1, type: `CHANNEL_${event.toUpperCase()}`});
   const channelLog = AuditLogFetch.entries.first();
   if (!channelLog) return console.log(`The channel was ${event}, but no relevant audit logs were found.`);
   const { executor, target } = channelLog;
-  console.log(executor.username);
-  
-  //executor.id
-  //executor.username
-  //executor.discriminator
+
+  database.save_channel(
+    channel.name,
+    channel.guild.name,
+    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+    time.utc,
+    cfg.utc_offset,
+    executor.id,
+    executor.username,
+    executor.discriminator,
+    channel.type,
+    event,
+  );
 }
 
 /**

@@ -78,8 +78,7 @@ exports.get_channels_by = get_channels_by;
 exports.close = close;
 
 // Чтение
-console.log(get_messages_by('id'));
-// 
+//console.log(get_messages_by('id')); 
 // console.log(get_channels_by('id'));
 
 // Запись
