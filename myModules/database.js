@@ -91,7 +91,7 @@ exports.close = close;
 // Чтение
 // console.log(get_objects_by('messages', 'id'));
 // console.log(get_objects_by('channels', 'channel_name'));
-console.log(get_objects_by('guilds', 'id'));
+// console.log(get_objects_by('guilds', 'id'));
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');
