@@ -83,8 +83,9 @@ function close() { db.close(); }
 
 
 exports.create_tables = create_tables;
-exports.save_message = save_message;
 exports.get_objects_by = get_objects_by;
+exports.save_message = save_message;
+exports.save_guild = save_guild;
 exports.save_channel = save_channel;
 exports.close = close;
 
