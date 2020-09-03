@@ -75,7 +75,7 @@ var st_channel = {
   discriminator: "", //int
 }
 
-var st_channel = {
+var st_guild = {
   server_name: "", //string
   human_time: "", //string
   utc: "", //int
