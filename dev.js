@@ -74,3 +74,18 @@ var st_channel = {
   author_username: "", //string
   discriminator: "", //int
 }
+
+var st_channel = {
+  server_name: "", //string
+  human_time: "", //string
+  utc: "", //int
+  utc_offset: "", //int
+  executor_id: "", //int
+  executor_username: "", //string
+  executor_discriminator: "", //int
+  target_id: "", //int
+  target_username: "", //string
+  target_discriminator: "", //int
+  action: "", //string
+  reason: "", //string | null in guildBanRemove
+}

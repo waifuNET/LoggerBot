@@ -106,6 +106,24 @@ logger.on("channelUpdate", async channel => {
   channel_event(channel, "update");
 });
 
+logger.on('guildBanAdd', async (guild, user) => {
+  guild_event(guild, user, "MEMBER_BAN_ADD");
+});
+
+logger.on('guildBanRemove', async (guild, user) => {
+  guild_event(guild, user, "MEMBER_BAN_REMOVE");
+});
+
+/*
+logger.on('guildDelete', async (guild, user) => {
+  guild_event(guild, user, "GUILD_DELETE");
+});
+
+logger.on('guildUpdate', async (guild, user) => {
+  guild_event(guild, user, "GUILD_UPDATE");
+});
+*/
+
 async function channel_event(channel, event){
   if (!channel.guild) return false;
   console.log(`channel ${event}. id: ` + channel.id);
@@ -126,6 +144,27 @@ async function channel_event(channel, event){
     channel.type,
     event,
   );
+}
+
+async function guild_event(guild, user, event){
+  const AuditLogFetch = await guild.fetchAuditLogs({limit: 1, type: event});
+  const Log = AuditLogFetch.entries.first();
+  if (!Log) return console.log(`${user.tag} was ${event} from ${guild.name} but no audit log could be found.`);
+  const { executor, target } = Log;
+  console.log(`User: ${executor.tag} ${event} on ${target.tag} in ${guild.name}.`);
+
+  /*
+  console.log("Log.action:" + Log.action);
+  console.log("Log.reason:" + Log.reason);
+  console.log("executor.id:" + executor.id);
+  console.log("executor.username:" + executor.username);
+  console.log("executor.discriminator:" + executor.discriminator);
+  console.log("target.id:" + target.id);
+  console.log("target.username:" + target.username);
+  console.log("target.discriminator:" + target.discriminator);
+  console.log("guild.name:" + guild.name);
+  */
+
 }
 
 /**
