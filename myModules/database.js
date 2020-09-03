@@ -96,5 +96,5 @@ console.log(get_objects_by('guilds', 'id'));
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');
 // save_channel('chnnl', 'servr', 1970, 197000, 6, 1, 'usrname', 'kek', 'type', 'event');
-save_guild('server', 't', 1, 2, 3, 'eu', 4, 'tu', 5, 'a', null);
+// save_guild('server', 't', 1, 2, 3, 'eu', 4, 'tu', 5, 'a', null);
 
