@@ -39,6 +39,23 @@ async function run(logger, msg, args){
         result += border;
         msg.channel.send(result);
     }
+    else if(args[0] == "guild"){
+        let result = "";
+        let border = "=========================" + "\n";
+        database.get_objects_by('guilds', 'id').reverse().forEach(element => {
+            if(count >= limit) return;
+            let server     = "server: "             + element.server_name       + "\n";
+            let action     = "action: "             + element.guild_action      + "\n";
+            let executor   = "executor username: "  + element.executor_username + "\n";
+            let target     = "target username: "    + element.target_username   + "\n";
+            let human_time = "human time: "         + element.human_time        + "\n";
+
+            result += border + server + action + executor + target + human_time;
+            count++;
+        });
+        result += border;
+        msg.channel.send(result);
+    }
     else{
         let result = "";
         let border = "=========================" + "\n";

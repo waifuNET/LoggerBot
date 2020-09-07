@@ -34,9 +34,10 @@ CREATE TABLE IF NOT EXISTS guilds (
 	utc_offset INTEGER NOT NULL,
 	executor_id INTEGER NOT NULL,
 	executor_username TEXT NOT NULL,
+	executor_discriminator INTEGER NOT NULL,
 	target_id INTEGER NOT NULL,
 	target_username TEXT NOT NULL,
 	target_discriminator INTEGER NOT NULL,
-	action TEXT NOT NULL,
+	guild_action TEXT NOT NULL,
 	reason TEXT
 );

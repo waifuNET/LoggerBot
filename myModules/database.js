@@ -59,17 +59,18 @@ function save_channel(channel_name, server_name, human_time, utc, utc_offset,
 
 
 function save_guild(server_name, human_time, utc, utc_offset,
-    	executor_id, executor_username, target_id, target_username, target_discriminator, action, reason){
+    	executor_id, executor_username, executor_discriminator, target_id, target_username, target_discriminator, action, reason){
     db.run(`INSERT INTO guilds(server_name, human_time, utc, utc_offset,
-    executor_id, executor_username, target_id, target_username, target_discriminator, action, reason)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+    executor_id, executor_username, executor_discriminator, target_id, target_username, target_discriminator, action, reason)
+    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         [
 		server_name, // string
 		human_time, // string
 		utc, // int
 		utc_offset, // int
 		executor_id, // int
-		executor_username, // string
+        executor_username, // string
+        executor_discriminator, //int
 		target_id, // int
 		target_username, // string
 		target_discriminator, // int
@@ -92,7 +93,7 @@ exports.close = close;
 // Чтение
 // console.log(get_objects_by('messages', 'id'));
 // console.log(get_objects_by('channels', 'channel_name'));
-// console.log(get_objects_by('guilds', 'id'));
+console.log(get_objects_by('guilds', 'id'));
 
 // Запись
 // save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');

@@ -153,7 +153,22 @@ async function guild_event(guild, user, event){
   const { executor, target } = Log;
   console.log(`User: ${executor.tag} ${event} on ${target.tag} in ${guild.name}.`);
 
-  /*
+  database.save_guild(
+    guild.name,
+    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+    time.utc,
+    time.utc_offset,
+    executor.id,
+    executor.username,
+    executor.discriminator,
+    target.id,
+    target.username,
+    target.discriminator,
+    Log.action,
+    Log.reason
+  );
+
+  console.log("guild.name:" + guild.name);
   console.log("Log.action:" + Log.action);
   console.log("Log.reason:" + Log.reason);
   console.log("executor.id:" + executor.id);
@@ -163,8 +178,6 @@ async function guild_event(guild, user, event){
   console.log("target.username:" + target.username);
   console.log("target.discriminator:" + target.discriminator);
   console.log("guild.name:" + guild.name);
-  */
-
 }
 
 /**
