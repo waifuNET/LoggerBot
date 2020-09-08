@@ -5,7 +5,7 @@ db.connect('logs/database.sqlite3.db');
 
 // From all objects
 function get_objects_by(table, field='id'){
-    return db.run(`SELECT * FROM ${table} ORDER BY ${field} DESC`);
+    return db.run(`SELECT * FROM ${table} ORDER BY ${field}`);
 }
 
 
@@ -49,7 +49,7 @@ exports.save = save;
 
 
 // Чтение
-// console.log(get_objects_by('table_name', 'field_name'));
+// console.log(get_objects_by('table_name', '-id'));
 
 // Запись
 // save('messages',
