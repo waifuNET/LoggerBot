@@ -3,101 +3,66 @@ const db = require('sqlite-sync');
 
 db.connect('logs/database.sqlite3.db');
 
-/**
- * Creates tables necessary for work.
- */
-function create_tables(){
-    let command = fs.readFileSync('myModules/create_tables.sql', 'utf8');
-    db.run(command);
-}
-
-
 // From all objects
-function get_objects_by(table, field){
-    let res = db.run("SELECT * FROM " + table);
-    return res;
+function get_objects_by(table, field='id'){
+    return db.run(`SELECT * FROM ${table} ORDER BY ${field}`);
 }
 
 
-function save_message(channel_name, server_name, content, human_time, utc, utc_offset,
-                      	author_id, author_username, discriminator, message_type){
-    db.run(`INSERT INTO messages(channel_name, server_name, content, human_time,
-            utc, utc_offset, author_id, author_username, discriminator, message_type)
-            VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [
-                channel_name, // string
-                server_name, // string
-                content, // string
-                human_time, // string
-                utc, // integer
-                utc_offset, // integer
-                author_id, // integer
-                author_username, // string
-                discriminator, // string
-                message_type // string
-	    ]) }
+// Save to database any object.
+function save(table_name, fields_values){
+    // Get fields and values comma separated.
+    var fields = Object.keys(fields_values).join(", ");
+    var values = Object.values(fields_values).join(', ');
 
+    // ? lenght == fields_values lenght.
+    var qs = [];
+    for (var i in fields_values){
+        qs.push('?');
+    }
+    // ? comma separated.
+    qs = qs.join(', ');
 
-function save_channel(channel_name, server_name, human_time, utc, utc_offset,
-    	author_id, author_username, discriminator, channel_type, channel_event){
-    db.run(`INSERT INTO channels(channel_name, server_name, human_time,
-    utc, utc_offset, author_id, author_username, discriminator, channel_type, channel_event)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-            channel_name, // string
-            server_name, // string
-            human_time, // string
-            utc, // integer
-            utc_offset, // integer
-            author_id, // integer
-            author_username, // string
-            discriminator, // string
-            channel_type, // string
-            channel_event // string
-        ])
+    // Copy values to simple array.
+    values = Object.values(fields_values);
+    var vals = [];
+    for (var i = 0; i < values.length; i++){
+        vals.push(values[i]);
+    }
+    
+    // Create table command.
+    create_table_cmd = `CREATE TABLE IF NOT EXISTS ${table_name}
+        (id INTEGER PRIMARY KEY AUTOINCREMENT, ${fields})`;
+    
+    // Save command.
+    var save_cmd = `INSERT INTO ${table_name}(${fields})
+        VALUES(${qs})`;
+
+    // Run commands.
+    db.run(create_table_cmd);
+    db.run(save_cmd, vals);
 }
 
 
-function save_guild(server_name, human_time, utc, utc_offset,
-    	executor_id, executor_username, executor_discriminator, target_id, target_username, target_discriminator, action, reason){
-    db.run(`INSERT INTO guilds(server_name, human_time, utc, utc_offset,
-    executor_id, executor_username, executor_discriminator, target_id, target_username, target_discriminator, guild_action, reason)
-    VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-        [
-		server_name, // string
-		human_time, // string
-		utc, // int
-		utc_offset, // int
-		executor_id, // int
-        executor_username, // string
-        executor_discriminator, //int
-		target_id, // int
-		target_username, // string
-		target_discriminator, // int
-		action, // string
-		reason, // string | null
-        ])
-}
-
-
-function close() { db.close(); }
-
-
-exports.create_tables = create_tables;
 exports.get_objects_by = get_objects_by;
-exports.save_message = save_message;
-exports.save_guild = save_guild;
-exports.save_channel = save_channel;
-exports.close = close;
+exports.save = save;
+
 
 // Чтение
-// console.log(get_objects_by('messages', 'id'));
-// console.log(get_objects_by('channels', 'channel_name'));
-// console.log(get_objects_by('guilds', 'id'));
+// console.log(get_objects_by('table_name', 'field_name'));
 
 // Запись
-// save_message('channel', 'server', 'content', 'time', 123, 321, 1, 'author_username', 'discriminator', 'message_type');
-// save_channel('chnnl', 'servr', 1970, 197000, 6, 1, 'usrname', 'kek', 'type', 'event');
-// save_guild('server', 't', 1, 2, 3, 'eu', 4, 'tu', 5, 'a', null);
-// save_guild('server', 't', 1, 2, 3, 'eu', 4, 5, 'tu', 6, 'a', null);
-
+// save('messages',
+//         {
+//             'channel': 'chnl',
+//             'server': 'srver',
+//             'contnent': 'cntnt',
+//             'human_time': 'time',
+//             'utc': 1,
+//             'utc_offset': 2,
+//             'author_id': 3,
+//             'author_username': 'username',
+//             'discriminator': 'disc',
+//             'message_type': 'type'
+//         }
+//     )
