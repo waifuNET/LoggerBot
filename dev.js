@@ -49,7 +49,7 @@ warn
 */
 
 //structs
-var st_log = {
+var st_message = {
   message_type: "", //string
   channel_name: "", //string
   server_name: "", //string
@@ -64,7 +64,6 @@ var st_log = {
 
 var st_channel = {
   channel_type: "", //string
-  id: "", //int
   channel_name: "", //string
   server_name: "", //string
   human_time: "", //string
@@ -73,6 +72,7 @@ var st_channel = {
   author_id: "", //int
   author_username: "", //string
   discriminator: "", //int
+  channel_event: "", //string
 }
 
 var st_guild = {

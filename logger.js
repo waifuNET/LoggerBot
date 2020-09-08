@@ -17,8 +17,6 @@ let commands = [];
 
 console.log(time.getHumanDateFormat(time.utc));
 
-database.create_tables();
-
 /**
  * Reads all files with the "js" extension, then reads them and adds them to commands.
  */
@@ -68,18 +66,21 @@ logger.on('message', async msg => {
   if(msg.channel.type == "dm") return;
   if(msg.author.bot) return;
   //log.addLog(logger, msg, time); //save in json
-
-  database.save_message( //save in sqlite
-    msg.channel.name,
-    msg.channel.guild.name,
-    msg.content,
-    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
-    time.utc, cfg.utc_offset,
-    msg.author.id,
-    msg.author.username,
-    msg.author.discriminator,
-    msg.type
-  );
+  
+  database.save('messages',
+ {
+     'message_type': msg.type,
+     'channel_name': msg.channel.name,
+     'server_name': msg.channel.guild.name,
+     'content': msg.content,
+     'human_time': time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+     'utc': time.utc,
+     'utc_offset': cfg.utc_offset,
+     'author_id': msg.author.id,
+     'author_username': msg.author.username,
+     'discriminator': msg.author.discriminator
+ }
+)
 
   if(!msg.content.startsWith(cfg.prefix)) return;
   let messageArray = msg.content.split(" ");
@@ -132,18 +133,21 @@ async function channel_event(channel, event){
   if (!channelLog) return console.log(`The channel was ${event}, but no relevant audit logs were found.`);
   const { executor, target } = channelLog;
 
-  database.save_channel(
-    channel.name,
-    channel.guild.name,
-    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
-    time.utc,
-    cfg.utc_offset,
-    executor.id,
-    executor.username,
-    executor.discriminator,
-    channel.type,
-    event,
-  );
+  database.save('channels',
+    {
+      'channel_type': channel.type,
+      'channel_name': channel.name,
+      'server_name': channel.guild.name,
+      'human_time': time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+      'utc': time.utc,
+      'utc_offset': cfg.utc_offset,
+      'author_id': executor.id,
+      'author_username': executor.username,
+      'author_discriminator': executor.discriminator,
+      'channel_event': event
+    }
+  )
+
 }
 
 async function guild_event(guild, user, event){
@@ -153,21 +157,24 @@ async function guild_event(guild, user, event){
   const { executor, target } = Log;
   console.log(`User: ${executor.tag} ${event} on ${target.tag} in ${guild.name}.`);
 
-  database.save_guild(
-    guild.name,
-    time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
-    time.utc,
-    time.utc_offset,
-    executor.id,
-    executor.username,
-    executor.discriminator,
-    target.id,
-    target.username,
-    target.discriminator,
-    Log.action,
-    Log.reason
-  );
+  database.save('guilds',
+  {
+    'server_name': guild.name,
+    'human_time': time.getHumanDateFormatWithOffset(time.utc, cfg.utc_offset * -1),
+    'utc': time.utc,
+    'utc_offset': time.utc_offset,
+    'executor_id': executor.id,
+    'executor_username': executor.username,
+    'executor_discriminator': executor.discriminator,
+    'target_id': target.id,
+    'target_username': target.username,
+    'target_discriminator': target.discriminator,
+    'guild_action': Log.action,
+    'guild_reason': Log.reason
+  }
+)
 
+/*
   console.log("guild.name:" + guild.name);
   console.log("Log.action:" + Log.action);
   console.log("Log.reason:" + Log.reason);
@@ -178,6 +185,7 @@ async function guild_event(guild, user, event){
   console.log("target.username:" + target.username);
   console.log("target.discriminator:" + target.discriminator);
   console.log("guild.name:" + guild.name);
+  */
 }
 
 /**

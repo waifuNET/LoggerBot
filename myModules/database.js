@@ -5,7 +5,7 @@ db.connect('logs/database.sqlite3.db');
 
 // From all objects
 function get_objects_by(table, field='id'){
-    return db.run(`SELECT * FROM ${table} ORDER BY ${field}`);
+    return db.run(`SELECT * FROM ${table} ORDER BY ${field} DESC`);
 }
 
 
