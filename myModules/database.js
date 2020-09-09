@@ -3,9 +3,27 @@ const db = require('sqlite-sync');
 
 db.connect('logs/database.sqlite3.db');
 
+
 // From all objects
-function get_objects_by(table, field='id'){
-    return db.run(`SELECT * FROM ${table} ORDER BY ${field}`);
+function get_objects_by(table, field='id', conditions={}){
+    var len = 0;
+    for (var i in conditions){
+        len++;
+    }
+    if (len == 0)
+        return db.run(`SELECT * FROM ${table} ORDER BY ${field}`);
+    else {
+        var condition = " WHERE ";
+	var keys = Object.keys(conditions);
+	var vals = Object.values(conditions);
+	conditions = [];
+        for (var i = 0; i < keys.length; i++){
+            conditions.push(`${keys[i]}=${vals[i]}`);
+        }
+	condition += conditions.join(' AND ');
+        return db.run(`SELECT * FROM ${table}${condition} ORDER BY ${field}`);
+
+    }
 }
 
 
@@ -50,6 +68,8 @@ exports.save = save;
 
 // Чтение
 // console.log(get_objects_by('table_name', '-id'));
+// console.log(get_objects_by('users', 'id', {'age': 0}));
+
 
 // Запись
 // save('messages',
